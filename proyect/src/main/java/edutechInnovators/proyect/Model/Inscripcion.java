@@ -22,4 +22,11 @@ public class Inscripcion {
     @Column(nullable = false)
     private Date fecha_inscripcion_ins;
 
+    @OneToOne
+    @JoinColumn(name = "id_cliente", nullable = false)
+    private Cliente cliente;
+
+    @OneToOne
+    @JoinColumn(name = "id_curso", nullable = false)
+    private Curso curso;
 }

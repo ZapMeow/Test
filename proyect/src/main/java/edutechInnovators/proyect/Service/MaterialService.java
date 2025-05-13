@@ -1,5 +1,6 @@
 package edutechInnovators.proyect.Service;
 
+import edutechInnovators.proyect.Model.Materia;
 import edutechInnovators.proyect.Model.Material;
 import edutechInnovators.proyect.Repository.MaterialRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,19 +16,24 @@ public class MaterialService {
     @Autowired
     private MaterialRepository materialRepository;
 
-    private List<Material> findAll() {
+    public List<Material> findAll() {
         return materialRepository.findAll();
     }
 
-    private Material findById(long id) {
+    public Material save(Material material) {
+        materialRepository.save(material);
+        return material;
+    }
+
+    public Material findById(long id) {
         return materialRepository.findById(id).get();
     }
 
-    private Material update(Material material) {
+    public Material update(Material material) {
         return materialRepository.save(material);
     }
 
-    private void delete(Material material) {
+    public void delete(Material material) {
         materialRepository.delete(material);
     }
 

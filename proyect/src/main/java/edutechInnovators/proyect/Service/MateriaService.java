@@ -23,8 +23,9 @@ public class MateriaService {
         return materiaRepository.findById(id).get();
     }
 
-    public void save(Materia materia) {
+    public Materia save(Materia materia) {
         materiaRepository.save(materia);
+        return materia;
     }
 
     public void delete(Materia materia) {

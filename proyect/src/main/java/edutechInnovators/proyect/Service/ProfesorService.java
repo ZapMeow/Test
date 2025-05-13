@@ -19,7 +19,7 @@ public class ProfesorService {
         return profesorRepository.findAll();
     }
 
-    public Profesor getProfesor(long id) {
+    public Profesor getProfesorById(long id) {
         return profesorRepository.findById(id).get();
     }
 
