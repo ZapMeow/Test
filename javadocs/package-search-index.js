@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"edutechInnovators.proyect"},{"l":"edutechInnovators.proyect.Controller"},{"l":"edutechInnovators.proyect.Model"},{"l":"edutechInnovators.proyect.Repository"},{"l":"edutechInnovators.proyect.Service"}];updateSearchResults();
