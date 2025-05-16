@@ -1,9 +1,8 @@
 package edutechInnovators.proyect.Controller;
 
-import edutechInnovators.proyect.Model.Material;
-import edutechInnovators.proyect.Service.MaterialService;
+import edutechInnovators.proyect.Model.Inscripcion;
+import edutechInnovators.proyect.Service.InscripcionService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,15 +17,15 @@ import java.util.List;
  * las peticiones REST o tambien endpoint
  */
 @RestController
-@RequestMapping("/edutechinnovations/api/v1/material")
-public class MaterialController {
+@RequestMapping("/edutechinnovations/api/v1/inscripcion")
+public class InscripcionController {
 
     /**
      * La anotacion @Autowired permide una instancia de dicho atributo sin necesidad de hacerlo
      * uno mismo
      */
     @Autowired
-    private MaterialService materialService;
+    private InscripcionService inscripcionService;
 
     /**
      * Esta funcion permite obtener todos los componentes de dicha tabla
@@ -36,12 +35,8 @@ public class MaterialController {
      * @return el retorno depende de la respuesta final estructurandola a gusto.
      */
     @GetMapping
-    public ResponseEntity<List<Material>> getMaterials() {
-        List<Material> materials = materialService.findAll();
-        if (materials.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-        return new ResponseEntity<>(materials, HttpStatus.OK);
+    public List<Inscripcion> getAllinscripciones() {
+        return inscripcionService.findAll();
     }
 
     /**
@@ -53,10 +48,8 @@ public class MaterialController {
      * @return el retorno depende de la respuesta final estructurandola a gusto.
      */
     @PostMapping
-    public ResponseEntity<Material> saveMaterial(@RequestBody Material material) {
-        System.out.println("saveMaterial");
-        Material newMaterial = materialService.save(material);
-        return ResponseEntity.status(HttpStatus.CREATED).body(newMaterial);
+    public Inscripcion createInscripcion(@RequestBody Inscripcion inscripcion) {
+        return inscripcionService.save(inscripcion);
     }
 
     /**
@@ -68,11 +61,11 @@ public class MaterialController {
      * @return el retorno depende de la respuesta final estructurandola a gusto.
      */
     @GetMapping("/{id}")
-    public ResponseEntity<Material> getMaterialById(@PathVariable Integer id) {
-        System.out.println("getMaterialById");
+    public ResponseEntity<Inscripcion> getInscripcionById(@PathVariable long id) {
+        System.out.println("getInscripcionById");
         try{
-            Material material = materialService.findById(id);
-            return ResponseEntity.ok(material);
+            Inscripcion inscripcion = inscripcionService.findById(id);
+            return ResponseEntity.ok(inscripcion);
         }catch(Exception e){
             return ResponseEntity.notFound().build();
         }
@@ -87,23 +80,21 @@ public class MaterialController {
      * ResponseEntity permite una escritura y estructuracion de respuesta en formato HTTP
      * @return el retorno depende de la respuesta final estructurandola a gusto.
      */
-    @PutMapping("/{id}")
-    public ResponseEntity<Material> updateMaterial(@PathVariable Integer id, @RequestBody Material material) {
-        System.out.println("updateMaterial");
+    @PutMapping("{id}")
+    public ResponseEntity<Inscripcion> updateinscripcion(@PathVariable long id, @RequestBody Inscripcion inscripcion) {
+
         try{
-            Material newMaterial = materialService.findById(id);
-            newMaterial.setId_material(material.getId_material());
-            newMaterial.setDescripcion_material(material.getDescripcion_material());
-            newMaterial.setUrl_material(material.getUrl_material());
+            Inscripcion inscripcionUpdate = inscripcionService.findById(id);
+            inscripcionUpdate.setId_ins(inscripcion.getId_ins());
+            inscripcionUpdate.setFecha_inscripcion_ins(inscripcion.getFecha_inscripcion_ins());
 
-            materialService.save(newMaterial);
-
-            return ResponseEntity.ok(newMaterial);
-
+            return ResponseEntity.ok(inscripcionUpdate);
         }catch (Exception e){
+            e.printStackTrace();
             return ResponseEntity.notFound().build();
         }
     }
+
 
 
 
