@@ -2,6 +2,12 @@ package edutechInnovators.proyect.Controller;
 
 import edutechInnovators.proyect.Model.Curso;
 import edutechInnovators.proyect.Service.CursoService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +24,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/edutechinnovations/api/v1/curso")
+@Tag(name = "Cursos", description = "Peticiones para las carreras")
 public class CursoController {
 
     /**
@@ -35,6 +42,15 @@ public class CursoController {
      * @return el retorno depende de la respuesta final estructurandola a gusto.
      */
     @GetMapping
+    @Operation(summary = "Ver cursos", description = "Devuelve una lista con todos los cursos")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "OK - Se obtiene el curso",
+                content = @Content(schema = @Schema(implementation = Curso.class))),
+            @ApiResponse(responseCode = "404", description = "Not found - El recurso solicitado no existe",
+                content = @Content),
+            @ApiResponse(responseCode = "500", description = "Internal server error - Error del servidor",
+                content = @Content)
+    })
     public List<Curso> getAllCursos(){
         return cursoService.findAll();
     }
@@ -48,6 +64,7 @@ public class CursoController {
      * @return el retorno depende de la respuesta final estructurandola a gusto.
      */
     @PostMapping
+    @Operation(summary = "Crear curso", description = "Crea un curso con los datos dados")
     public Curso createCurso(@RequestBody Curso curso){
         return cursoService.save(curso);
     }
@@ -61,6 +78,7 @@ public class CursoController {
      * @return el retorno depende de la respuesta final estructurandola a gusto.
      */
     @GetMapping("/{id}")
+    @Operation(summary = "Obtener curso", description = "Obtiene un curso especifico")
     public ResponseEntity<Curso> getCursoById(@PathVariable Integer id) {
         System.out.println("getCursoById");
         try{
@@ -81,6 +99,7 @@ public class CursoController {
      * @return el retorno depende de la respuesta final estructurandola a gusto.
      */
     @PutMapping("{id}")
+    @Operation(summary = "Actualizar curso", description = "Actualizar los datos de un curso especifico")
     public ResponseEntity<Curso> updateCurso(@PathVariable int id, @RequestBody Curso curso){
 
         try{

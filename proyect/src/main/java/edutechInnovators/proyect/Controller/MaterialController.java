@@ -2,6 +2,8 @@ package edutechInnovators.proyect.Controller;
 
 import edutechInnovators.proyect.Model.Material;
 import edutechInnovators.proyect.Service.MaterialService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +21,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/edutechinnovations/api/v1/material")
+@Tag(name = "Materiales", description = "Peticiones con los materiales")
 public class MaterialController {
 
     /**
@@ -36,6 +39,7 @@ public class MaterialController {
      * @return el retorno depende de la respuesta final estructurandola a gusto.
      */
     @GetMapping
+    @Operation(summary = "Obtener materiales", description = "Obtiene todos los materiales disponibles")
     public ResponseEntity<List<Material>> getMaterials() {
         List<Material> materials = materialService.findAll();
         if (materials.isEmpty()) {
@@ -53,6 +57,7 @@ public class MaterialController {
      * @return el retorno depende de la respuesta final estructurandola a gusto.
      */
     @PostMapping
+    @Operation(summary = "Agregar un material", description = "Inserta un nuevo material con los datos especificados")
     public ResponseEntity<Material> saveMaterial(@RequestBody Material material) {
         System.out.println("saveMaterial");
         Material newMaterial = materialService.save(material);
@@ -68,6 +73,7 @@ public class MaterialController {
      * @return el retorno depende de la respuesta final estructurandola a gusto.
      */
     @GetMapping("/{id}")
+    @Operation(summary = "Obtener material", description = "Obtiene un material especifico por la id")
     public ResponseEntity<Material> getMaterialById(@PathVariable Integer id) {
         System.out.println("getMaterialById");
         try{
@@ -88,6 +94,7 @@ public class MaterialController {
      * @return el retorno depende de la respuesta final estructurandola a gusto.
      */
     @PutMapping("/{id}")
+    @Operation(summary = "Actualizar material", description = "Actualiza un material por la id")
     public ResponseEntity<Material> updateMaterial(@PathVariable Integer id, @RequestBody Material material) {
         System.out.println("updateMaterial");
         try{

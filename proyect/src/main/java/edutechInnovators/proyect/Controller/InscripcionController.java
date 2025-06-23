@@ -2,6 +2,8 @@ package edutechInnovators.proyect.Controller;
 
 import edutechInnovators.proyect.Model.Inscripcion;
 import edutechInnovators.proyect.Service.InscripcionService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +20,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/edutechinnovations/api/v1/inscripcion")
+@Tag(name = "Inscripciones", description = "Peticiones para las inscripciones")
 public class InscripcionController {
 
     /**
@@ -35,6 +38,7 @@ public class InscripcionController {
      * @return el retorno depende de la respuesta final estructurandola a gusto.
      */
     @GetMapping
+    @Operation(summary = "Obtener inscripciones", description = "Obtiene una lista con las inscripciones")
     public List<Inscripcion> getAllinscripciones() {
         return inscripcionService.findAll();
     }
@@ -48,6 +52,7 @@ public class InscripcionController {
      * @return el retorno depende de la respuesta final estructurandola a gusto.
      */
     @PostMapping
+    @Operation(summary = "Crea una inscripcion", description = "Inserta una descripcion con los datos especificados")
     public Inscripcion createInscripcion(@RequestBody Inscripcion inscripcion) {
         return inscripcionService.save(inscripcion);
     }
@@ -61,6 +66,7 @@ public class InscripcionController {
      * @return el retorno depende de la respuesta final estructurandola a gusto.
      */
     @GetMapping("/{id}")
+    @Operation(summary = "Obtiene una inscripcion", description = "Obtiene una inscripcion especifica por una id")
     public ResponseEntity<Inscripcion> getInscripcionById(@PathVariable long id) {
         System.out.println("getInscripcionById");
         try{
@@ -81,6 +87,7 @@ public class InscripcionController {
      * @return el retorno depende de la respuesta final estructurandola a gusto.
      */
     @PutMapping("{id}")
+    @Operation(summary = "Actualizar inscripcion", description = "Actualiza una inscripcion mediante una id")
     public ResponseEntity<Inscripcion> updateinscripcion(@PathVariable long id, @RequestBody Inscripcion inscripcion) {
 
         try{

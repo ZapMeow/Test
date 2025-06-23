@@ -2,6 +2,8 @@ package edutechInnovators.proyect.Controller;
 
 import edutechInnovators.proyect.Model.Profesor;
 import edutechInnovators.proyect.Service.ProfesorService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +21,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/edutechinnovations/api/v1/profesor")
+@Tag(name = "Profesores", description = "Peticiones con los profesores")
 public class ProfesorController {
 
     /**
@@ -36,6 +39,7 @@ public class ProfesorController {
      * @return el retorno depende de la respuesta final estructurandola a gusto.
      */
     @GetMapping
+    @Operation(summary = "Obtener profesores", description = "Obtiene una lista con todos los profesores")
     public ResponseEntity<List<Profesor>> getProfesor() {
         List<Profesor> profesores = profesorService.getProfesores();
         if (profesores.isEmpty()) {
@@ -53,6 +57,7 @@ public class ProfesorController {
      * @return el retorno depende de la respuesta final estructurandola a gusto.
      */
     @PostMapping
+    @Operation(summary = "Crear profesor", description = "Inserta un nuevo profesor con los datos dados")
     public ResponseEntity<Profesor> saveProfesor(@RequestBody Profesor profesor) {
         Profesor newProfesor = profesorService.saveProfesor(profesor);
         return new ResponseEntity<>(newProfesor, HttpStatus.CREATED);
@@ -67,6 +72,7 @@ public class ProfesorController {
      * @return el retorno depende de la respuesta final estructurandola a gusto.
      */
     @GetMapping("/{id}")
+    @Operation(summary = "Obtiene un profesor", description = "Mediante la id obtiene un profesor especifico")
     public ResponseEntity<Profesor> getProfesorById(@PathVariable Long id) {
         System.out.println("getProfesorById");
         try{
@@ -87,6 +93,7 @@ public class ProfesorController {
      * @return el retorno depende de la respuesta final estructurandola a gusto.
      */
     @PutMapping("/{id}")
+    @Operation(summary = "Actualiza un profesor", description = "Actualiza un profesor mediante la id")
     public ResponseEntity<Profesor> updateProfesor(@PathVariable Long id, @RequestBody Profesor profesor) {
         System.out.println("updateProfesor");
         try{

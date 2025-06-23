@@ -2,6 +2,8 @@ package edutechInnovators.proyect.Controller;
 
 import edutechInnovators.proyect.Model.Evaluacion;
 import edutechInnovators.proyect.Service.EvaluacionService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +21,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/edutechinnovations/api/v1/evaluacion")
+@Tag(name = "Evaluaciones", description = "Peticiones para las evaluaciones")
 public class EvaluacionController {
 
     /**
@@ -36,6 +39,7 @@ public class EvaluacionController {
      * @return el retorno depende de la respuesta final estructurandola a gusto.
      */
     @GetMapping
+    @Operation(summary = "Obtener evaluaciones", description = "Obtiene una lista de evaluaciones")
     public ResponseEntity<List<Evaluacion>> getEvaluacion() {
         List<Evaluacion> evaluaciones = evaluacionService.findAll();
         if (evaluaciones.isEmpty()) {
@@ -53,6 +57,7 @@ public class EvaluacionController {
      * @return el retorno depende de la respuesta final estructurandola a gusto.
      */
     @PostMapping
+    @Operation(summary = "Inserta una evaluacion", description = "Guarda una evaluacion con los datos dados")
     public ResponseEntity<Evaluacion> saveEvaluacion(@RequestBody Evaluacion evaluacion) {
         Evaluacion savedEvaluacion = evaluacionService.save(evaluacion);
         return new ResponseEntity<>(savedEvaluacion, HttpStatus.CREATED);
@@ -67,6 +72,7 @@ public class EvaluacionController {
      * @return el retorno depende de la respuesta final estructurandola a gusto.
      */
     @GetMapping("/{id}")
+    @Operation(summary = "Obtener evaluacion", description = "Obtiene una evaluacion por la id")
     public ResponseEntity<Evaluacion> getEvaluacionById(@PathVariable int id) {
         try {
             Evaluacion evaluacion = evaluacionService.findById(id);
@@ -86,6 +92,7 @@ public class EvaluacionController {
      * @return el retorno depende de la respuesta final estructurandola a gusto.
      */
     @PutMapping("/{id}")
+    @Operation(summary = "Actualizar evaluacion", description = "Actualiza una evaluacion por la id")
     public ResponseEntity<Evaluacion> updateEvaluacion(@PathVariable int id, @RequestBody Evaluacion evaluacion) {
 
         try{
