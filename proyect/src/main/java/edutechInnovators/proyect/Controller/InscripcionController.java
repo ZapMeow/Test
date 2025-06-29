@@ -3,6 +3,7 @@ package edutechInnovators.proyect.Controller;
 import edutechInnovators.proyect.Model.Inscripcion;
 import edutechInnovators.proyect.Service.InscripcionService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -39,6 +40,7 @@ public class InscripcionController {
      */
     @GetMapping
     @Operation(summary = "Obtener inscripciones", description = "Obtiene una lista con las inscripciones")
+
     public List<Inscripcion> getAllinscripciones() {
         return inscripcionService.findAll();
     }
