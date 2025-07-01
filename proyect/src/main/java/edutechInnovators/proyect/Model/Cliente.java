@@ -51,42 +51,42 @@ public class Cliente {
      * Genera una columna pnombre_cliente
      * de largo 25 y que no puede ser null
      */
-    @Column(length = 25, nullable = false)
+    @Column(nullable = false)
     private String pnombre_cliente;
 
     /**
      * Genera una columna snombre_cliente
      * de largo 25 y que puede ser null
      */
-    @Column(length = 25, nullable = true)
+    @Column(nullable = true)
     private String snombre_cliente;
 
     /**
      * Genera una columna appaterno_cliente
      * de largo 25 y que no puede ser null
      */
-    @Column(length = 25, nullable = false)
+    @Column(nullable = false)
     private String appaterno_cliente;
 
     /**
      * Genera una columna apmaterno_cliente
      * de largo 25 y que no puede ser null
      */
-    @Column(length = 25, nullable = false)
+    @Column(nullable = false)
     private String apmaterno_cliente;
 
     /**
      * Genera una columna correo_cliente
      * de largo 60 y que no puede ser null
      */
-    @Column(length = 60, nullable = false)
+    @Column(nullable = false)
     private String correo_cliente;
 
     /**
      * Genera una columna contrasena_cliente
      * de largo 10 y que no puede ser nulo
      */
-    @Column(length = 10, nullable = false)
+    @Column(nullable = false)
     private String contrasena_cliente;
 
     /**
@@ -103,5 +103,6 @@ public class Cliente {
      */
     @Column(nullable = false)
     private boolean activo_cliente;
+
 
 }

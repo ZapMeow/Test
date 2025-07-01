@@ -52,28 +52,28 @@ public class Profesor {
      * Genera una columna pnombre_profesor
      * de largo 25 y que no puede ser null
      */
-    @Column(length = 25, nullable = false)
+    @Column(nullable = false)
     private String pnombre_profesor;
 
     /**
      * Genera una columna snombre_profesor
      * de largo 25 y que no puede ser null
      */
-    @Column(length = 25, nullable = true)
+    @Column(nullable = true)
     private String snombre_profesor;
 
     /**
      * Genera una columna appaterno_profesor
      * de largo 25 y que no puede ser null
      */
-    @Column(length = 25, nullable = false)
+    @Column(nullable = false)
     private String appaterno_profesor;
 
     /**
      * Genera una columna apmaterno_profesor
      * de largo 25 y que no puede ser null
      */
-    @Column(length = 25, nullable = false)
+    @Column(nullable = false)
     private String apmaterno_profesor;
 
     /**

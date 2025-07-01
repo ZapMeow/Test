@@ -1,6 +1,6 @@
 package edutechInnovators.proyect;
 
-import edutechInnovators.proyect.Model.Cliente;
+import edutechInnovators.proyect.Model.*;
 import edutechInnovators.proyect.Repository.*;
 import net.datafaker.Faker;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,9 +10,12 @@ import org.springframework.stereotype.Component;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
-
+//ADVERTENCIA PUEDE GENERAR ERRORES
+@Profile("test")
 @Component
 public class DataLoader implements CommandLineRunner {
 
@@ -34,34 +37,119 @@ public class DataLoader implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        Faker faker = new Faker();
+        Locale locale = new Locale("es", "CL");
+        Faker faker = new Faker(locale);
         Random random = new Random();
 
+        //cuantos datos de cada entidad se quieren
+        final int CANTIDAD_DE_CLIENTES = 30;
+        final int CANTIDAD_DE_CURSO = 30;
+        final int CANTIDAD_DE_EVALUACION = 30;
+        final int CANTIDAD_DE_INSCRIPCION = 30;
+        final int CANTIDAD_DE_MATERIA = 30;
+        final int CANTIDAD_DE_MATERIAL = 30;
+        final int CANTIDAD_DE_PROFESOR = 30;
 
+        //GENERAR CLIENTES
 
-        //Cliente
-        for (int i = 0; i < 3; i++){
+        for (int i = 0; i < CANTIDAD_DE_CLIENTES; i++){
+
             Cliente newCliente = new Cliente();
-            newCliente.setPnombre_cliente(faker.name().firstName());
-            newCliente.setSnombre_cliente(faker.name().lastName());
-            newCliente.setAppaterno_cliente(faker.clashOfClans().defensiveBuilding());
-            newCliente.setApmaterno_cliente(faker.clashOfClans().rank());
+            //newCliente.setId_cliente(i+1);
+            newCliente.setRun_cliente(faker.number().numberBetween(1000000, 30000000));
+            newCliente.setDv_cliente(String.valueOf(faker.number().numberBetween(0,9)));
+            newCliente.setPnombre_cliente(faker.clashOfClans().defensiveBuilding());
+            newCliente.setSnombre_cliente(faker.clashOfClans().troop());
+            newCliente.setAppaterno_cliente(faker.minecraft().itemName());
+            newCliente.setApmaterno_cliente(faker.onePiece().character());
             newCliente.setCorreo_cliente(faker.internet().emailAddress());
-            newCliente.setContrasena_cliente(faker.internet().password(4,10));
-            newCliente.setRun_cliente(faker.number().numberBetween(11111111, 33333333));
-            int numberOrK = random.nextInt(2);
-            if (numberOrK == 1){
-                newCliente.setDv_cliente(String.valueOf(faker.number().numberBetween(0,9)));
-            }else{
-                newCliente.setDv_cliente("K");
-            }
+            newCliente.setContrasena_cliente(faker.internet().password(6,10));
+            newCliente.setFecha_nacimiento_cliente(faker.date().past(365, TimeUnit.DAYS));
             newCliente.setActivo_cliente(faker.bool().bool());
-            newCliente.setFecha_nacimiento_cliente(new Date());
 
             clienteRepository.save(newCliente);
         }
 
-        List<Cliente> clientes = clienteRepository.findAll();
+        //GENERAR PROFESORES
+
+        for (int i = 0; i < CANTIDAD_DE_PROFESOR; i++){
+
+            Profesor newProfesor = new Profesor();
+            //newProfesor.setId_profesor(i+1);
+            newProfesor.setRun_profesor(faker.number().numberBetween(1000000, 30000000));
+            newProfesor.setDv_profesor(String.valueOf(faker.number().numberBetween(0,9)));
+            newProfesor.setPnombre_profesor(faker.clashOfClans().defensiveBuilding());
+            newProfesor.setSnombre_profesor(faker.clashOfClans().troop());
+            newProfesor.setAppaterno_profesor(faker.minecraft().itemName());
+            newProfesor.setApmaterno_profesor(faker.onePiece().character());
+            newProfesor.setCorreo_profesor(faker.internet().emailAddress());
+            newProfesor.setContrasena_profesor(faker.internet().password(6,10));
+            newProfesor.setFecha_nacimiento_profesor(faker.date().past(365, TimeUnit.DAYS));
+
+            profesorRepository.save(newProfesor);
+        }
+
+        //GENERAR CURSOS
+
+        for (int i = 0; i < CANTIDAD_DE_CURSO; i++){
+
+            Curso newCurso = new Curso();
+            //newCurso.setId_curso(i+1);
+            newCurso.setNombre_curso(faker.educator().course());
+            newCurso.setFecha_creacion_curso(faker.date().past(365, TimeUnit.DAYS));
+
+            cursoRepository.save(newCurso);
+        }
+
+        //GENERAR EVALUACIONES
+
+        for (int i = 0; i < CANTIDAD_DE_EVALUACION; i++) {
+
+            Evaluacion newEvaluacion = new Evaluacion();
+            //newEvaluacion.setId_eva(i+1);
+            newEvaluacion.setNombre_eva(faker.pokemon().name());
+            newEvaluacion.setPonderacion_eva(faker.number().randomDouble(2,10,99));
+
+            evaluacionRepository.save(newEvaluacion);
+
+        }
+
+        //GENERAR INSCRIPCION
+
+        for (int i = 0; i < CANTIDAD_DE_INSCRIPCION; i++) {
+
+            Inscripcion newInscripcion = new Inscripcion();
+            //newInscripcion.setId_ins(i+1);
+            newInscripcion.setFecha_inscripcion_ins(faker.date().past(365, TimeUnit.DAYS));
+
+            inscripcionRepository.save(newInscripcion);
+
+        }
+
+        //GENERAR MATERIA
+
+        for (int i = 0; i < CANTIDAD_DE_MATERIA; i++) {
+
+            Materia newMateria = new Materia();
+            //newMateria.setId(i+1);
+            newMateria.setNombre_materia(faker.leagueOfLegends().champion());
+
+            materiaRepository.save(newMateria);
+
+        }
+
+        //GENERAR MATERIAL
+
+        for (int i = 0; i < CANTIDAD_DE_MATERIAL; i++) {
+
+            Material material1 = new Material();
+            //material1.setId_material(i+1);
+            material1.setDescripcion_material(faker.dungeonsAndDragons().rangedWeapons());
+            material1.setUrl_material(faker.internet().domainName());
+
+            materialRepository.save(material1);
+        }
+
 
 
 

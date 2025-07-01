@@ -47,4 +47,5 @@ public class Curso {
     @Column(nullable = false)
     private Date fecha_creacion_curso;
 
+
 }

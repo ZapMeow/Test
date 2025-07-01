@@ -36,6 +36,6 @@ public class Materia {
      * de largo 50 y que no puede ser null
      * ademas de unique osea que no puede repetirse este dato
      */
-    @Column(length = 50, nullable = false, unique = true)
+    @Column(nullable = false)
     private String nombre_materia;
 }

@@ -3,10 +3,13 @@ package edutechInnovators.proyect.Service;
 import edutechInnovators.proyect.Model.Materia;
 import edutechInnovators.proyect.Model.Material;
 import edutechInnovators.proyect.Repository.MaterialRepository;
+import jakarta.persistence.metamodel.SingularAttribute;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.AbstractPersistable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -68,6 +71,7 @@ public class MaterialService {
     public void delete(Material material) {
         materialRepository.delete(material);
     }
+
 
 
 }

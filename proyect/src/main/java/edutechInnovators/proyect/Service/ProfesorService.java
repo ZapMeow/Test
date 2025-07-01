@@ -2,10 +2,12 @@ package edutechInnovators.proyect.Service;
 
 import edutechInnovators.proyect.Model.Profesor;
 import edutechInnovators.proyect.Repository.ProfesorRepository;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -65,6 +67,14 @@ public class ProfesorService {
      */
     public void deleteProfesor(long id) {
         profesorRepository.deleteById(id);
+    }
+
+
+    public Collection<Object> findAll() {
+        return null;
+    }
+
+    public void delete(Profesor profesor) {
     }
 
 
