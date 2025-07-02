@@ -24,22 +24,11 @@ import java.util.Date;
 @NoArgsConstructor
 public class Inscripcion {
 
-    /**
-     * Se crea la columna y atributo id_ins
-     *
-     * -@Id: Genera la columna como clave foranea
-     * -@GeneratedValue: Genera una sequencia para la generacion de clave foranea
-     */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id_ins;
 
-    /**
-     * Genera una columna fecha_inscripcion_ins
-     * de tipo Date y no puede ser null
-     */
     @Column(nullable = false)
     private Date fecha_inscripcion_ins;
-
 
 }

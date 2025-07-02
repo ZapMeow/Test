@@ -22,29 +22,14 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Evaluacion {
 
-    /**
-     * Se crea la columna y atributo id_eva
-     *
-     * -@Id: Genera la columna como clave foranea
-     * -@GeneratedValue: Genera una sequencia para la generacion de clave foranea
-     */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id_eva;
 
-    /**
-     * Genera una columna nombre_eva
-     * de largo 50 y que no puede ser null
-     */
     @Column(length = 50, nullable = false)
     private String nombre_eva;
 
-    /**
-     * Genera una columna ponderacion_eva
-     * con dato double
-     * de largo 5 y que 2 son decimales ademas
-     * de no poder ser null
-     */
     @Column(length = 5, scale = 2, nullable = false)
     private double ponderacion_eva;
+
 }

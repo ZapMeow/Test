@@ -21,21 +21,15 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Materia {
 
-    /**
-     * Se crea la columna y atributo id
-     *
-     * -@Id: Genera la columna como clave foranea
-     * -@GeneratedValue: Genera una sequencia para la generacion de clave foranea
-     */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private int id_materia;
 
-    /**
-     * Genera una columna nombre_materia
-     * de largo 50 y que no puede ser null
-     * ademas de unique osea que no puede repetirse este dato
-     */
     @Column(length = 50, nullable = false, unique = true)
     private String nombre_materia;
+
+    @ManyToOne
+    @JoinColumn(name = "id_curso", nullable = false)
+    private Curso curso;
+
 }

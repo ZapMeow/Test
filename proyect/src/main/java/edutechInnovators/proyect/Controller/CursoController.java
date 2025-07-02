@@ -1,7 +1,9 @@
 package edutechInnovators.proyect.Controller;
 
 import edutechInnovators.proyect.Model.Curso;
+import edutechInnovators.proyect.Model.Profesor;
 import edutechInnovators.proyect.Service.CursoService;
+import edutechInnovators.proyect.Service.ProfesorService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -12,35 +14,24 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
-/**
- * Esta clase es la encargada de las peticiones REST y el propio funcionamiento de estas
- *
- * La anotacion @RestController indica que esta clase va a actuar como controlador de las
- * peticiones REST
- * La anotacion @RequestMapping indica en que ruta estara dichos servicios para su interaccion con
- * las peticiones REST o tambien endpoint
- */
+
 @RestController
 @RequestMapping("/edutechinnovations/api/v1/curso")
 @Tag(name = "Cursos", description = "Peticiones para las carreras")
 public class CursoController {
 
-    /**
-     * La anotacion @Autowired permide una instancia de dicho atributo sin necesidad de hacerlo
-     * uno mismo
-     */
+
     @Autowired
     private CursoService cursoService;
 
-    /**
-     * Esta funcion permite obtener todos los componentes de dicha tabla
-     * La anotacion @GetMapping permite recibir peticiones GET desde una pagina con
-     * un path especifico
-     * ResponseEntity permite una escritura y estructuracion de respuesta en formato HTTP
-     * @return el retorno depende de la respuesta final estructurandola a gusto.
-     */
+    @Autowired
+    private ProfesorService profesorService;
+
+
     @GetMapping
     @Operation(summary = "Ver cursos", description = "Devuelve una lista con todos los cursos")
     @ApiResponses(value = {
@@ -55,28 +46,32 @@ public class CursoController {
         return cursoService.findAll();
     }
 
-    /**
-     * Esta funcin permite insertar datos dependiendo lo especificado
-     * La anotacion @PostMapping permite recibir peticiones POST desde una pagina con
-     * un path especifico
-     * @RequestBody permite rescatar el body de la peticion
-     * ResponseEntity permite una escritura y estructuracion de respuesta en formato HTTP
-     * @return el retorno depende de la respuesta final estructurandola a gusto.
-     */
+
     @PostMapping
     @Operation(summary = "Crear curso", description = "Crea un curso con los datos dados")
-    public Curso createCurso(@RequestBody Curso curso){
-        return cursoService.save(curso);
+    public ResponseEntity<?> createCurso(@RequestBody DTOcurso dtocurso){
+        try{
+            Profesor currentProfesor = profesorService.getProfesorById(dtocurso.getId_profesor());
+            Curso curso = new Curso();
+            curso.setNombre_curso(dtocurso.getNombre_curso());
+            curso.setFecha_creacion_curso(dtocurso.getFecha_creacion_curso());
+            curso.setProfesor(currentProfesor);
+            cursoService.save(curso);
+            return ResponseEntity.ok().body(Map.of("id", curso.getId_curso(),
+                                                   "Nombre_curso", curso.getNombre_curso(),
+                                                   "fecha_creacion", curso.getFecha_creacion_curso(),
+                                                   "id_profesor", curso.getProfesor().getId_profesor()));
+        }catch (Exception e){
+            String error = "Error: el profesor con ID " + dtocurso.getId_profesor()
+                        + " no existe. No se creó el curso.";
+            Curso failedCurso = new Curso(0, "error", new Date(), new Profesor());
+            failedCurso.setNombre_curso("invalid");
+            return ResponseEntity.badRequest().body(Map.of("error", error));
+        }
+
     }
 
-    /**
-     * Esta funcion permite obtener un dato con una variable especifica
-     * La anotacion @GetMapping permite recibir peticiones GET desde una pagina con
-     * un path especifico
-     * @PathVariable permite rescatar una variable desde lo que esta escrito en la ruta
-     * ResponseEntity permite una escritura y estructuracion de respuesta en formato HTTP
-     * @return el retorno depende de la respuesta final estructurandola a gusto.
-     */
+
     @GetMapping("/{id}")
     @Operation(summary = "Obtener curso", description = "Obtiene un curso especifico")
     public ResponseEntity<Curso> getCursoById(@PathVariable Integer id) {
@@ -89,15 +84,7 @@ public class CursoController {
         }
     }
 
-    /**
-     * Esta funcion permite actualizar dicho dato especificado
-     * La anotacion @PutMapping permite recibir peticiones PUT desde una pagina con
-     * un path especifico
-     * @PathVariable permite rescatar una variable desde lo que esta escrito en la ruta
-     * @RequestBody permite rescatar el body de la peticion
-     * ResponseEntity permite una escritura y estructuracion de respuesta en formato HTTP
-     * @return el retorno depende de la respuesta final estructurandola a gusto.
-     */
+
     @PutMapping("{id}")
     @Operation(summary = "Actualizar curso", description = "Actualizar los datos de un curso especifico")
     public ResponseEntity<Curso> updateCurso(@PathVariable int id, @RequestBody Curso curso){
