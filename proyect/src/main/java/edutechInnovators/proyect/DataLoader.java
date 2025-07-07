@@ -128,7 +128,7 @@ public class DataLoader implements CommandLineRunner {
 
         //GENERAR MATERIA
 
-        for (int i = 0; i < CANTIDAD_DE_MATERIA; i++) {
+        /*for (int i = 0; i < CANTIDAD_DE_MATERIA; i++) {
 
             Materia newMateria = new Materia();
             //newMateria.setId(i+1);
@@ -136,7 +136,7 @@ public class DataLoader implements CommandLineRunner {
 
             materiaRepository.save(newMateria);
 
-        }
+        }*/
 
         //GENERAR MATERIAL
 

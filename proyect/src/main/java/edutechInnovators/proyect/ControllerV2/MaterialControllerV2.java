@@ -21,16 +21,10 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @RequestMapping ("/edutechinnovations/api/v2/material")
 public class MaterialControllerV2 {
 
-
-
-
     @Autowired
      private MaterialService materialService;
     @Autowired
      private  MaterialModelAssembler materialModelAssembler;
-
-
-
 
     @GetMapping(produces = MediaTypes.HAL_JSON_VALUE)
     public CollectionModel<EntityModel<Material>> getAllMaterials(){

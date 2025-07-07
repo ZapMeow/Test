@@ -14,7 +14,7 @@ public class MateriaModelAssembler implements RepresentationModelAssembler<Mater
     @Override
     public  EntityModel <Materia> toModel(Materia materia){
         return  EntityModel.of(materia,
-                linkTo(methodOn(MateriaControllerV2.class).getMaterialById(materia.getId())).withSelfRel(),
+                linkTo(methodOn(MateriaControllerV2.class).getMateriaById(materia.getId())).withSelfRel(),
                 linkTo(methodOn(MateriaControllerV2.class).getClass()).withRel("materia"));
     }
 

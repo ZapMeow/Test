@@ -21,9 +21,6 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @RequestMapping ("/edutechinnovations/api/v2/materia")
 public class MateriaControllerV2 {
 
-
-
-
     @Autowired
     private MateriaService materiaService;
     @Autowired
@@ -33,7 +30,7 @@ public class MateriaControllerV2 {
 
 
     @GetMapping(produces = MediaTypes.HAL_JSON_VALUE)
-    public CollectionModel<EntityModel<Materia>> getAllMaterials(){
+    public CollectionModel<EntityModel<Materia>> getAllMaterias(){
         System.out.println("getAllMateria");
         List<EntityModel<Materia>>materia = materiaService.getAllMaterias().stream()
                 .map(materiaModelAssembler::toModel)
@@ -42,7 +39,7 @@ public class MateriaControllerV2 {
     }
 
     @PostMapping(value = "/{id}",produces =  MediaTypes.HAL_JSON_VALUE)
-    public EntityModel<Materia> getMaterialById(@PathVariable long id){
+    public EntityModel<Materia> getMateriaById(@PathVariable long id){
         System.out.println("createMateria");
         Materia materia =materiaService.getMateriaById(id);
         return materiaModelAssembler.toModel(materia);
@@ -53,7 +50,7 @@ public class MateriaControllerV2 {
         System.out.println("createMateria");
         Materia newMateria = materiaService.save(materia);
         return ResponseEntity
-                .created(linkTo(methodOn(MaterialControllerV2.class).getMaterialById(newMateria.getId())).toUri())
+                .created(linkTo(methodOn(MateriaControllerV2.class).getMateriaById(newMateria.getId())).toUri())
                 .body(materiaModelAssembler.toModel(newMateria));
     }
 

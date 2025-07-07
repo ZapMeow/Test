@@ -75,6 +75,7 @@ public class ProfesorService {
     }
 
     public void delete(Profesor profesor) {
+        profesorRepository.delete(profesor);
     }
 
 
