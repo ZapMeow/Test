@@ -2,8 +2,14 @@ package edutechInnovators.proyect.Controller;
 
 import edutechInnovators.proyect.Model.Cliente;
 import edutechInnovators.proyect.Model.Credencial;
+import edutechInnovators.proyect.Model.Evaluacion;
+import edutechInnovators.proyect.Model.Profesor;
 import edutechInnovators.proyect.Service.ClienteService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -41,6 +47,12 @@ public class ClienteController {
      */
     @GetMapping
     @Operation(summary = "Obtener clientes", description = "Obtienes una lista con todos los clientes tantos activos como inactivos")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Se ha encontrado una lista de clientes",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Cliente.class))),
+            @ApiResponse(responseCode = "204", description = "La solicitud esta bien pero no se han encontrado datos")
+    })
     public ResponseEntity<List<Cliente>> getAllClientes() {
         System.out.println("getAllClientes");
         List<Cliente> clientes = clienteService.findAll();
@@ -60,6 +72,13 @@ public class ClienteController {
      */
     @PostMapping
     @Operation(summary = "Guardar un clinete", description = "Guarda un nuevo cliente")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Se ha creado un nuevo cliente",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Cliente.class))),
+            @ApiResponse(responseCode = "400", description = "El formato del body esta mal estructurado",
+                    content = @Content)
+    })
     public ResponseEntity<Cliente> saveCliente(@RequestBody Cliente cliente) {
         System.out.println("saveCliente");
         Cliente newCliente = clienteService.save(cliente);
@@ -76,6 +95,15 @@ public class ClienteController {
      */
     @GetMapping("/{id}")
     @Operation(summary = "Obtener cliente", description = "Busca y devuelve un cliente especificado con la id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Se ha encontrado un cliente",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Cliente.class))),
+            @ApiResponse(responseCode = "401", description = "No se inserto la id para la busqueda",
+                    content = @Content),
+            @ApiResponse(responseCode = "404", description = "La id especificada no se encuentra",
+                    content = @Content)
+    })
     public ResponseEntity<Cliente> getClienteById(@PathVariable Integer id) {
         System.out.println("getClienteById");
         try{
@@ -97,6 +125,15 @@ public class ClienteController {
      */
     @PutMapping("/{id}")
     @Operation(summary = "actualizar cliente", description = "Toma un cliente existente y cambia sus datos por el id especificado")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Se ha actualizado un cliente",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Cliente.class))),
+            @ApiResponse(responseCode = "401", description = "El cuerpo tiene un mal formato o no hay id",
+                    content = @Content),
+            @ApiResponse(responseCode = "404", description = "No se encontro el cliente para actualizar",
+                    content = @Content)
+    })
     public ResponseEntity<Cliente> updateCliente(@PathVariable Integer id, @RequestBody Cliente cliente) {
         System.out.println("updateCliente");
         try{
@@ -132,9 +169,16 @@ public class ClienteController {
      */
     @PostMapping("/sesion")
     @Operation(summary = "Sesion", description = "Verifica si los datos especificados son del cliente")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Las credenciales son correctas",
+                content = @Content),
+            @ApiResponse(responseCode = "401", description = "Las credenciales o el cuerpo de la solicitud son incorrectos",
+                content = @Content),
+            @ApiResponse(responseCode = "404", description = "No se encontro ningun dato dado",
+                content = @Content)
+    })
     public ResponseEntity<String> isValidSesion(@RequestBody Credencial credencial) {
         System.out.println("isValidSesion");
-
         List<Cliente> clientes = clienteService.findAll();
         for (Cliente cliente : clientes) {
             if (cliente.getCorreo_cliente().equals(credencial.getCorreo_cliente()) && cliente.getContrasena_cliente().equals(credencial.getContrasena_cliente())) {
@@ -142,6 +186,28 @@ public class ClienteController {
             }
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("usuario o contraseña incorrecta");
+
+    }
+
+    @DeleteMapping("/{id}")
+    @Operation(summary = "Borrar usuario", description = "Borra un usuario por la id especificada")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "202", description = "Se ha borrado un usuario exitosamente",
+                    content = @Content),
+            @ApiResponse(responseCode = "401", description = "No se ha colocado la id",
+                    content = @Content),
+            @ApiResponse(responseCode = "404", description = "No se encontro el usuario",
+                    content = @Content)
+    })
+    public ResponseEntity<?> deleteCliente(@PathVariable long id){
+
+        try{
+            Cliente cliente = clienteService.findById(id);
+            clienteService.delete(cliente);
+            return ResponseEntity.status(HttpStatus.ACCEPTED).build();
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
 
     }
 

@@ -1,11 +1,15 @@
 package edutechInnovators.proyect.Controller;
 
-import edutechInnovators.proyect.Model.Curso;
-import edutechInnovators.proyect.Model.Materia;
+import edutechInnovators.proyect.Model.*;
 import edutechInnovators.proyect.Service.MateriaService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -40,6 +44,13 @@ public class MateriaController {
      */
     @GetMapping
     @Operation(summary = "Obtener materias", description = "Obtiene una lista con todas las materias")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Se ha encontrado una lista de materias",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Materia.class))),
+            @ApiResponse(responseCode = "204", description = "La solicitud esta bien pero no se han encontrado datos",
+                content = @Content)
+    })
     public List<Materia> getAllMaterias() {
         return materiaService.getAllMaterias();
     }
@@ -54,6 +65,13 @@ public class MateriaController {
      */
     @PostMapping
     @Operation(summary = "Agregar una materia", description = "Inserta una materia con los datos especificados")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Se ha creado una nueva materia",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Materia.class))),
+            @ApiResponse(responseCode = "400", description = "El formato del body esta mal estructurado",
+                    content = @Content)
+    })
     public Materia createMateria(@RequestBody Materia materia) {
         return materiaService.save(materia);
     }
@@ -68,6 +86,15 @@ public class MateriaController {
      */
     @GetMapping("/{id}")
     @Operation(summary = "Obtener materia", description = "Obtiene una materia con una id especifica")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Se ha encontrado una materia",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Materia.class))),
+            @ApiResponse(responseCode = "401", description = "No se inserto la id para la busqueda",
+                    content = @Content),
+            @ApiResponse(responseCode = "404", description = "La id especificada no se encuentra",
+                    content = @Content)
+    })
     public ResponseEntity<Materia> getMateriaById(@PathVariable Integer id) {
         System.out.println("getMateriaById");
         try{
@@ -89,6 +116,15 @@ public class MateriaController {
      */
     @PutMapping("{id}")
     @Operation(summary = "Actualizar materia", description = "Actualiza los datos de una materia por la id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Se ha actualizado una materia",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Materia.class))),
+            @ApiResponse(responseCode = "401", description = "El cuerpo tiene un mal formato o no hay id",
+                    content = @Content),
+            @ApiResponse(responseCode = "404", description = "No se encontro la materia para actualizar",
+                    content = @Content)
+    })
     public ResponseEntity<Materia> updateMateria(@PathVariable int id, @RequestBody Materia materia){
 
         try{
@@ -102,6 +138,27 @@ public class MateriaController {
         }
     }
 
+    @DeleteMapping("/{id}")
+    @Operation(summary = "Borrar materia", description = "Borra una materia por la id especificada")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "202", description = "Se ha borrado la materia exitosamente",
+                    content = @Content),
+            @ApiResponse(responseCode = "401", description = "No se ha colocado la id",
+                    content = @Content),
+            @ApiResponse(responseCode = "404", description = "No se encontro la materia",
+                    content = @Content)
+    })
+    public ResponseEntity<?> deleteMateria(@PathVariable int id){
+
+        try{
+            Materia materia = materiaService.getMateriaById(id);
+            materiaService.delete(materia);
+            return ResponseEntity.status(HttpStatus.ACCEPTED).build();
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+
+    }
 
 
 }

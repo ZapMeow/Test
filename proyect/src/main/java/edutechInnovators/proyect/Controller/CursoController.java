@@ -1,6 +1,9 @@
 package edutechInnovators.proyect.Controller;
 
+import edutechInnovators.proyect.Model.Cliente;
 import edutechInnovators.proyect.Model.Curso;
+import edutechInnovators.proyect.Model.Evaluacion;
+import edutechInnovators.proyect.Model.Profesor;
 import edutechInnovators.proyect.Service.CursoService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -9,6 +12,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -44,11 +48,10 @@ public class CursoController {
     @GetMapping
     @Operation(summary = "Ver cursos", description = "Devuelve una lista con todos los cursos")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "OK - Se obtiene el curso",
-                content = @Content(schema = @Schema(implementation = Curso.class))),
-            @ApiResponse(responseCode = "404", description = "Not found - El recurso solicitado no existe",
-                content = @Content),
-            @ApiResponse(responseCode = "500", description = "Internal server error - Error del servidor",
+            @ApiResponse(responseCode = "200", description = "Se ha encontrado una lista de cursos",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Curso.class))),
+            @ApiResponse(responseCode = "204", description = "La solicitud esta bien pero no se han encontrado datos",
                 content = @Content)
     })
     public List<Curso> getAllCursos(){
@@ -65,6 +68,13 @@ public class CursoController {
      */
     @PostMapping
     @Operation(summary = "Crear curso", description = "Crea un curso con los datos dados")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Se ha creado un nuevo curso",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Curso.class))),
+            @ApiResponse(responseCode = "400", description = "El formato del body esta mal estructurado",
+                    content = @Content)
+    })
     public Curso createCurso(@RequestBody Curso curso){
         return cursoService.save(curso);
     }
@@ -79,6 +89,15 @@ public class CursoController {
      */
     @GetMapping("/{id}")
     @Operation(summary = "Obtener curso", description = "Obtiene un curso especifico")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Se ha encontrado un curso",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Curso.class))),
+            @ApiResponse(responseCode = "401", description = "No se inserto la id para la busqueda",
+                    content = @Content),
+            @ApiResponse(responseCode = "404", description = "La id especificada no se encuentra",
+                    content = @Content)
+    })
     public ResponseEntity<Curso> getCursoById(@PathVariable Integer id) {
         System.out.println("getCursoById");
         try{
@@ -100,6 +119,15 @@ public class CursoController {
      */
     @PutMapping("{id}")
     @Operation(summary = "Actualizar curso", description = "Actualizar los datos de un curso especifico")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Se ha actualizado un curso",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Curso.class))),
+            @ApiResponse(responseCode = "401", description = "El cuerpo tiene un mal formato o no hay id",
+                    content = @Content),
+            @ApiResponse(responseCode = "404", description = "No se encontro el curso para actualizar",
+                    content = @Content)
+    })
     public ResponseEntity<Curso> updateCurso(@PathVariable int id, @RequestBody Curso curso){
 
         try{
@@ -113,5 +141,27 @@ public class CursoController {
             e.printStackTrace();
             return ResponseEntity.notFound().build();
         }
+    }
+
+    @DeleteMapping("/{id}")
+    @Operation(summary = "Borrar curso", description = "Borra un curso por la id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "202", description = "Se ha borrado un curso exitosamente",
+                    content = @Content),
+            @ApiResponse(responseCode = "401", description = "No se ha colocado la id",
+                    content = @Content),
+            @ApiResponse(responseCode = "404", description = "No se encontro el curso",
+                    content = @Content)
+    })
+    public ResponseEntity<?> deleteCurso(@PathVariable long id){
+
+        try{
+            Curso curso = cursoService.findById(id);
+            cursoService.delete(curso);
+            return ResponseEntity.status(HttpStatus.ACCEPTED).build();
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+
     }
 }
